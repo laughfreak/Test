@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间必须是接口-->
+<mapper namespace="com.prj.mapper.TeacherMapper">
+    <resultMap id="studentMap" type="Student">
+        <id column="sid" property="sid"></id>
+        <result column="sname" property="sname"></result>
+        <association property="teacher" javaType="Teacher" resultMap="teacherMap"></association>
+    </resultMap>
+    <resultMap id="teacherMap" type="Teacher">
+        <id column="tid" property="tid"></id>
+        <result column="tname" property="tname"></result>
+    </resultMap>
+
+    <select id="queryTeacherList"  resultMap="teacherMap" >
+        SELECT * FROM `teacher`
+    </select>
+
+
+</mapper>

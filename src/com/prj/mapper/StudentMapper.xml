@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间必须是接口-->
+<mapper namespace="com.prj.mapper.StudentMapper">
+    <resultMap id="studentMap" type="Student">
+        <id column="sid" property="sid"></id>
+        <result column="sname" property="sname"></result>
+        <association property="teacher" javaType="Teacher" resultMap="teacherMap"></association>
+    </resultMap>
+    <resultMap id="teacherMap" type="Teacher">
+        <id column="tid" property="tid"></id>
+        <result column="tname" property="tname"></result>
+    </resultMap>
+
+    <delete id="delStudent" parameterType="int">
+        delete from student where sid=#{sid};
+    </delete>
+
+    <select id="queryList"  resultMap="studentMap" parameterType="int">
+        select * from student s,teacher t where s.tid=t.tid order by s.sid limit #{page},#{limit};
+    </select>
+
+    <select id="count" resultType="int">
+        select COUNT(*) from student;
+    </select>
+
+    <insert id="addStudent" parameterType="Student" >
+
+        INSERT INTO `student`(sname,tid) VALUES(#{sname},#{teacher.tid})
+
+    </insert>
+
+    <select id="queryBySid" parameterType="int" resultMap="studentMap">
+        select * from student s,teacher t where s.tid=t.tid and s.sid=#{sid}
+    </select>
+
+    <update id="updateStudent" parameterType="Student">
+        update student set sname=#{sname},tid=#{teacher.tid} where sid=#{sid}
+    </update>
+
+</mapper>
